@@ -1,0 +1,52 @@
+*instead*				Plugin that helps writing games for INSTEAD
+
+INSTEAD v.0.1.0 (first version)
+================================================================================
+What I can do with it?
+================================================================================
+
+This plugin helps with navigation in your INSTEAD game file. You can open the
+window with list of all rooms, objects or dialogs and quickly jump to it
+in the game file.
+
+================================================================================
+How to use
+================================================================================
+
+Default keybindings:
+
+<F5>: Open rooms window
+<F6>: Open objs window
+<F7>: Open dlgs window
+
+In window:
+<Enter>: go to selected room/object/dialog and close the window
+<Esc>: closes the window
+
+If you leave the window it will be automatically closed.
+  
+================================================================================
+Configuration
+================================================================================
+You can redefine this keys in your .vimrc. Just add this global variables
+with appropriate values to it.
+
+|InsteadRoomsKey|					-- Rooms window
+|InsteadObjsKey|					-- Objs window      
+|InsteadDlgsKey|					-- Dlgs window      
+
+You can also redefine rooms, objs, and dlgs tokens (if you are
+using iroom instead of room, for example):
+
+|InsteadRoomToken|				-- Room token
+|InsteadObjToken|					-- Obj token
+|InsteadDlgToken|					-- Dlg token
+
+And finally you can define position of the window. Currently only
+"left" position is working (by default windows will appears at the
+bottom):
+
+|InsteadWindowPosition|				-- Windows position 
+
+vim:tw=78:ts=8:sw=8:sts=8:noet:ft=help:norl:
+
