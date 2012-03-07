@@ -1,7 +1,7 @@
 
 " INSTEAD functions
 
-" instead#GrepInsteadObjects() {{{1
+" instead#GrepInsteadObjects(obj) {{{1
 function! instead#GrepInsteadObjects(obj) 
   
   " GrepInsteadObjects(obj)
@@ -16,9 +16,26 @@ function! instead#GrepInsteadObjects(obj)
     echo ""
     lwindow
     " Close llist on WinLeave
-    au WinLeave <buffer> exe 'close!'
+    au WinLeave <buffer> execute 'close!'
     " Map <Esc> to close llist
-    nmap <buffer> <Esc> :close!<CR>
+    nnoremap <buffer> <Esc> <C-w>w
+    " Map configured keys inside buffer to corresponding
+    " actions
+    call instead#AddLocListMappings(g:InsteadRoomsKey, 
+          \g:InsteadObjsKey, 
+          \g:InsteadDlgsKey)
+    " Map corresponding key to close llist
+    if a:obj == g:InsteadRoomToken
+      let l:closekey = g:InsteadRoomsKey
+    elseif a:obj == g:InsteadObjToken
+      let l:closekey = g:InsteadObjsKey
+    elseif a:obj == g:InsteadDlgToken
+      let l:closekey = g:InsteadDlgsKey
+    else
+      echo "Close key defining error!"
+    endif
+    " Map close key
+    execute "nmap <buffer> " . l:closekey . " <C-w>w"
     " Checking window position
     if exists("g:InsteadWindowPosition")
       if g:InsteadWindowPosition == 'left'
@@ -40,49 +57,79 @@ function! instead#GrepInsteadObjects(obj)
   endif
 endfunction " 1}}}
 
+" instead#InitGlobals(options) {{{1
+
+" instead#InitGlobals(options)
+" Initializes variables in dictionary
+" "options" if they are not exists
+
+function! instead#InitGlobals(options)
+  if empty(a:options)
+    return
+  endif
+  for variable in keys(a:options)
+    if !exists(variable)
+      execute "let " . variable . " = '" . a:options[variable] . "'"
+    endif
+  endfor
+endfunction " 1}}}
+
+" instead#InitMappings(mappings) {{{1
+
+" instead#InitMappings(mappings)
+" initializes mappings in "mappings" dictionary
+
+function! instead#InitMappings(mappings)
+  if empty(a:mappings)
+    return
+  endif
+  for key in keys(a:mappings)
+    execute 'nnoremap ' . key . ' :call instead#GrepInsteadObjects("' . a:mappings[key] . '")<CR>'
+  endfor
+endfunction
+
+" 1}}}
+
+" instead#AddLocListMappings(...) {{{1
+
+" instead#AddLocListMappings(...)
+" Adds mappings to location list
+
+function! instead#AddLocListMappings(...)
+  if a:0 == 0
+    return
+  endif
+  let index = 1
+  while index <= a:0
+    execute 'nmap <buffer> ' . a:{index} . ' :wincmd w<CR>' . a:{index}
+    let index += 1
+  endwhile
+endfunction
+
+"1}}}
+
 " instead#Init() {{{1
 function! instead#Init()
 
-  if exists("g:InsteadRoomToken") 
-    let s:rooms = g:InsteadRoomToken
-  else
-    let s:rooms = "room"
-  endif
+  let options = {
+    \ "g:InsteadRoomToken": "room",
+    \ "g:InsteadObjToken" : "obj",
+    \ "g:InsteadDlgToken" : "dlg",
+    \ "g:InsteadRoomsKey" : "<F5>",
+    \ "g:InsteadObjsKey"  : "<F6>",
+    \ "g:InsteadDlgsKey"   : "<F7>",
+    \}
 
-  if exists("g:InsteadObjToken")
-    let s:objs = g:InsteadObjToken
-  else
-    let s:objs = "obj"
-  endif
+  let mappings = {
+    \ "g:InsteadRoomsKey": "g:InsteadRoomToken",
+    \ "g:InsteadObjsKey" : "g:InsteadObjToken",
+    \ "g:InsteadDlgsKey"  : "g:InsteadDlgToken",
+    \}
 
-  if exists("g:InsteadDlgToken")
-    let s:dlgs = g:InsteadDlgToken
-  else
-    let s:dlgs = "dlg"
-  endif
-
-  if exists("g:InsteadRoomsKey")
-    let s:roomskey = g:InsteadRoomsKey
-  else
-    let s:roomskey = "<F5>"
-  endif
-
-  if exists("g:InsteadObjsKey")
-    let s:objskey = g:InsteadObjsKey
-  else
-    let s:objskey = "<F6>"
-  endif
-
-  if exists("g:InsteadDlgsKey")
-    let s:dlgskey = g:InsteadDlgsKey
-  else
-    let s:dlgskey = "<F7>"
-  endif
-
-  execute 'nnoremap ' . s:roomskey . ' :call instead#GrepInsteadObjects("' . s:rooms . '")<CR>'
-  execute 'nnoremap ' . s:objskey . ' :call instead#GrepInsteadObjects("' . s:objs . '")<CR>'
-  execute 'nnoremap ' . s:dlgskey . ' :call instead#GrepInsteadObjects("' . s:dlgs . '")<CR>'
+  call instead#InitGlobals(options)
+  call instead#InitMappings(mappings)
 
 endfunction
 " 1}}}
-"
+
+" vim:foldmethod=marker
