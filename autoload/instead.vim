@@ -10,7 +10,7 @@ function! instead#GrepInsteadObjects(obj)
   " Clear old location list
   call setloclist(0, [])
   " Grep all the lines into location list
-  silent! exe 'lvimgrep /^\s*\w\{1,}\s*=\s*' . a:obj . '/j %'
+  silent! exe 'lvimgrep /^\s*\w\{1,}\s*=\s*[ix]\{0,1}' . a:obj . '/j %'
   " If location list is not empty
   if !empty(getloclist(0))
     echo ""
@@ -84,7 +84,7 @@ function! instead#InitMappings(mappings)
     return
   endif
   for key in keys(a:mappings)
-    execute 'nnoremap ' . key . ' :call instead#GrepInsteadObjects("' . a:mappings[key] . '")<CR>'
+    execute 'nnoremap ' . eval(key) . ' :call instead#GrepInsteadObjects("' . eval(a:mappings[key]) . '")<CR>'
   endfor
 endfunction
 

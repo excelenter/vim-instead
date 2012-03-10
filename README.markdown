@@ -1,5 +1,5 @@
-INSTEAD plugin for Vim (v.0.1)
-======================
+INSTEAD plugin for Vim (v.0.2.1)
+==============================
 
 This plugin will help you with creating INSTEAD text adventures.
 

@@ -1,6 +1,6 @@
 *instead*				Plugin that helps writing games for INSTEAD
 
-INSTEAD v.0.1.0 (first version)
+INSTEAD v.0.2.1
 ================================================================================
 What I can do with it?
 ================================================================================
@@ -22,6 +22,9 @@ Default keybindings:
 In window:
 <Enter>: go to selected room/object/dialog and close the window
 <Esc>: closes the window
+Key that opens current window will close it. So if you are opened the rooms
+window and hit <F5>, this window closes.
+Other <F*> keys will open corresponding windows.
 
 If you leave the window it will be automatically closed.
   
@@ -35,8 +38,9 @@ with appropriate values to it.
 |InsteadObjsKey|					-- Objs window      
 |InsteadDlgsKey|					-- Dlgs window      
 
-You can also redefine rooms, objs, and dlgs tokens (if you are
-using iroom instead of room, for example):
+You can also redefine rooms, objs, and dlgs tokens (note that
+currently "i" or "x" added to that tokens when you opening
+the window):
 
 |InsteadRoomToken|				-- Room token
 |InsteadObjToken|					-- Obj token
