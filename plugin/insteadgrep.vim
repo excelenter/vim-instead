@@ -1,3 +1,4 @@
-" Vim-instead v.0.2.1
+" Vim-instead v.0.3.0
 
 call instead#Init()
+

@@ -117,7 +117,8 @@ function! instead#Init()
     \ "g:InsteadDlgToken" : "dlg",
     \ "g:InsteadRoomsKey" : "<F5>",
     \ "g:InsteadObjsKey"  : "<F6>",
-    \ "g:InsteadDlgsKey"   : "<F7>",
+    \ "g:InsteadDlgsKey"  : "<F7>",
+    \ "g:InsteadRunKey"   : "<F8>",
     \}
 
   let mappings = {
@@ -128,6 +129,9 @@ function! instead#Init()
 
   call instead#InitGlobals(options)
   call instead#InitMappings(mappings)
+
+  " Dirty mapping for InsteadRun
+  exec "nmap " . g:InsteadRunKey . " :InsteadRun<CR>"
 
 endfunction
 " 1}}}
